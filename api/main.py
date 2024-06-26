@@ -14,6 +14,7 @@ app = FastAPI()
 origins = [
     "http://localhost",
     "http://localhost:3000",
+    "https://potato-lac-nine.vercel.app"
 ]
 
 app.add_middleware(
