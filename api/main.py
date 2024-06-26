@@ -24,8 +24,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-model_path = "./model.h5" 
-DL_model = tf.keras.models.load_model(model_path)
+model_path = "new_model.keras"
+DL_model = tf.keras.models.load_model(model_path, compile=False)
 
 class_names = ["Potato___Early_blight", "Potato___Late_blight", "Potato___healthy"]
 
@@ -33,10 +33,14 @@ def read_file_as_image(data) -> np.ndarray:
     image = np.array(Image.open(BytesIO(data)))
     return image
 
+@app.get("/")
+async def root():
+    return {"test": "Welcome to the Potato Disease Prediction API"}
+
 @app.post("/prediction")
 async def prediction(
     file: UploadFile = File(...)
-    ):
+):
     content = read_file_as_image(await file.read())
     img_batch = np.expand_dims(content, 0)
     predict = DL_model.predict(img_batch)
@@ -48,6 +52,11 @@ async def prediction(
         'confidence': float(most_accurate)
     }
 
+@app.get("/favicon.ico")
+async def favicon():
+    return {"message": "This is the favicon route. You can add a favicon here."}
+
 if __name__ == "__main__":
     uvicorn.run(app, host="localhost", port=8000)
+
 
