@@ -24,7 +24,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-model_path = "C:/Users/dinaa/Downloads/potato-disease/models/1"
+model_path = "api/models/1" 
 DL_model = tf.keras.models.load_model(model_path)
 
 class_names = ["Potato___Early_blight", "Potato___Late_blight", "Potato___healthy"]
